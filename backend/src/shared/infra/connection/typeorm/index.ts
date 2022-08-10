@@ -1,7 +1,5 @@
 import { DataSource } from 'typeorm';
 import { Appointment } from '../../../../modules/appointments/models/Appointment';
-import { User } from '../../../../modules/users/models/User';
-import { CreateUser1660152118553 } from './migrations/1660152118553-CreateUser';
 import { CreateAppointment1660152366538 } from './migrations/1660152366538-CreateAppointment';
 
 export const dataSource = new DataSource({
@@ -11,6 +9,6 @@ export const dataSource = new DataSource({
   username: 'postgres',
   password: 'postgres',
   database: 'gostack11',
-  entities: [User, Appointment],
-  migrations: [CreateUser1660152118553, CreateAppointment1660152366538],
+  entities: [Appointment],
+  migrations: [CreateAppointment1660152366538],
 });
