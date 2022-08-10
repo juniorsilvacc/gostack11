@@ -1,4 +1,5 @@
 interface ICreateAppointmentDTO {
+  id?: string;
   provider: string;
   date: Date;
 }

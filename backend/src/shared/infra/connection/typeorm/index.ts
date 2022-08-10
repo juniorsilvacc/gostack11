@@ -1,6 +1,9 @@
 import { DataSource } from 'typeorm';
 import { Appointment } from '../../../../modules/appointments/models/Appointment';
+import { User } from '../../../../modules/users/models/User';
 import { CreateAppointment1660152366538 } from './migrations/1660152366538-CreateAppointment';
+import { CreateUser1660162713716 } from './migrations/1660162713716-CreateUser';
+import { AlterTableAddColumnProviderId1660163923628 } from './migrations/1660163923628-AlterTableAddColumnProviderId';
 
 export const dataSource = new DataSource({
   type: 'postgres',
@@ -9,6 +12,10 @@ export const dataSource = new DataSource({
   username: 'postgres',
   password: 'postgres',
   database: 'gostack11',
-  entities: [Appointment],
-  migrations: [CreateAppointment1660152366538],
+  entities: [Appointment, User],
+  migrations: [
+    CreateAppointment1660152366538,
+    CreateUser1660162713716,
+    AlterTableAddColumnProviderId1660163923628,
+  ],
 });
