@@ -9,9 +9,11 @@ class CreateUserController {
     const usersRepository = new UsersRepository();
     const createUserServices = new CreateUserService(usersRepository);
 
-    const create = await createUserServices.execute({ name, email, password });
+    const user = await createUserServices.execute({ name, email, password });
 
-    return response.status(201).json(create);
+    delete user.password;
+
+    return response.status(201).json(user);
   }
 }
 

@@ -5,7 +5,7 @@ import { CreateAppointmentService } from '../services/CreateAppointmentService';
 
 class CreateAppointmentController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { provider, date } = request.body;
+    const { provider_id, date } = request.body;
 
     const parsedDate = parseISO(date);
 
@@ -15,7 +15,7 @@ class CreateAppointmentController {
     );
 
     const appointment = await createAppointmentService.execute({
-      provider,
+      provider_id,
       date: parsedDate,
     });
 

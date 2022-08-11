@@ -1,6 +1,6 @@
 interface ICreateAppointmentDTO {
   id?: string;
-  provider: string;
+  provider_id: string;
   date: Date;
 }
 
