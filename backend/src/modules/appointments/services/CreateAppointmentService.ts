@@ -2,6 +2,7 @@ import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 import { Appointment } from '../models/Appointment';
 import { startOfHour } from 'date-fns';
 import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
+import { AppError } from '../../../config/errors/AppError';
 
 class CreateAppointmentService {
   constructor(
@@ -18,7 +19,7 @@ class CreateAppointmentService {
       await this.appointmentsRepository.findByDate(appointmentDate);
 
     if (findAppointmentInSameDate) {
-      throw Error('This appointment is already booked');
+      throw new AppError('This appointment is already booked');
     }
 
     const appointment = await this.appointmentsRepository.create({

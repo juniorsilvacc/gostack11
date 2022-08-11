@@ -13,7 +13,10 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "no-console": "warn",
-    "prettier/prettier": "error"
+    "no-console": "off",
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "_"
+    }]
   }
 }

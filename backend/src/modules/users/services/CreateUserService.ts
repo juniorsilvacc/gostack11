@@ -2,6 +2,7 @@ import { ICreateUserDTO } from '../dtos/ICreateUserDTO';
 import { User } from '../models/User';
 import { IUsersRepository } from '../repositories/IUsersRepository';
 import { hash } from 'bcryptjs';
+import { AppError } from '../../../config/errors/AppError';
 
 class CreateUserService {
   constructor(private readonly usersRepository: IUsersRepository) {}
@@ -10,7 +11,7 @@ class CreateUserService {
     const checkUser = await this.usersRepository.findByEmail(email);
 
     if (checkUser) {
-      throw new Error('User already exists');
+      throw new AppError('User already exists');
     }
 
     const passwordHash = await hash(password, 8);

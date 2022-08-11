@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { AppError } from '../../../config/errors/AppError';
 import { UsersRepository } from '../repositories/implementations/UsersRepository';
 import { UpdateAvatarService } from '../services/UpdateAvatarService';
 
@@ -10,7 +11,7 @@ class UpdateAvatarController {
     const updateAvatarService = new UpdateAvatarService(usersRepository);
 
     if (!request.file) {
-      throw new Error('Error: upload image');
+      throw new AppError('Error: upload image');
     } else {
       const { filename: image } = request.file;
 

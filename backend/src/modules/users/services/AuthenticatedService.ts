@@ -2,6 +2,7 @@ import { IUsersRepository } from '../repositories/IUsersRepository';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import auth from '../../../config/auth';
+import { AppError } from '../../../config/errors/AppError';
 
 interface IRequest {
   email: string;
@@ -15,13 +16,13 @@ class AuthenticatedService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Email or password incorrect');
+      throw new AppError('Email or password incorrect', 401);
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      throw new Error('Email or password incorrect');
+      throw new AppError('Email or password incorrect', 401);
     }
 
     const token = sign({}, auth.jwt.secret, {

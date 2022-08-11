@@ -1,5 +1,5 @@
+import 'reflect-metadata';
 import app from './app';
-
 import { dataSource } from './shared/infra/connection/typeorm';
 
 dataSource.initialize().then(() => {
