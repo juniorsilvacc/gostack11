@@ -1,6 +1,6 @@
-import { AppError } from '../../../config/errors/AppError';
-import { InMemoryAppointmentsRepository } from '../repositories/in-memory/InMemoryAppointmentsRepository';
-import { CreateAppointmentService } from '../services/CreateAppointmentService';
+import { AppError } from '../../../../config/errors/AppError';
+import { InMemoryAppointmentsRepository } from '../../repositories/in-memory/InMemoryAppointmentsRepository';
+import { CreateAppointmentService } from '../../services/CreateAppointmentService';
 
 let inMemoryAppointmentsRepository: InMemoryAppointmentsRepository;
 let createAppointment: CreateAppointmentService;
