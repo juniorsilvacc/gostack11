@@ -39,4 +39,19 @@ describe('Authenticated', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to authenticate with wrong password', async () => {
+    await inMemoryUsersRepository.create({
+      name: 'JúniorSilva',
+      email: 'junior@hotmail.com',
+      password: '123456',
+    });
+
+    await expect(
+      authenticated.execute({
+        email: 'junior@hotmail.com',
+        password: '123654',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
