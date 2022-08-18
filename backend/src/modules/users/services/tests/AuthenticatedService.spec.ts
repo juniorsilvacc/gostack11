@@ -1,3 +1,4 @@
+import { AppError } from '../../../../config/errors/AppError';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { AuthenticatedService } from '../AuthenticatedService';
 import { CreateUserService } from '../CreateUserService';
@@ -28,5 +29,14 @@ describe('Authenticated', () => {
     expect(response).toHaveProperty('token');
     expect(response.name).toBe(user.name);
     expect(response.email).toBe(user.email);
+  });
+
+  it('should not be able to authenticate with non existent user', async () => {
+    await expect(
+      authenticated.execute({
+        email: 'junior@hotmail.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
