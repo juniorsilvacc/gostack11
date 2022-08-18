@@ -1,8 +1,8 @@
 import { IUsersRepository } from '../repositories/IUsersRepository';
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import auth from '../../../config/auth';
 import { AppError } from '../../../config/errors/AppError';
+import { IBcryptProviderImplementations } from '../../../shared/providers/bcrypt/IBcryptProviderImplementations';
 
 interface IRequest {
   email: string;
@@ -10,7 +10,10 @@ interface IRequest {
 }
 
 class AuthenticatedService {
-  constructor(private readonly usersRepository: IUsersRepository) {}
+  constructor(
+    private readonly usersRepository: IUsersRepository,
+    private readonly bcryptHashProvider: IBcryptProviderImplementations,
+  ) {}
 
   async execute({ email, password }: IRequest) {
     const user = await this.usersRepository.findByEmail(email);
@@ -19,7 +22,10 @@ class AuthenticatedService {
       throw new AppError('Email or password incorrect', 401);
     }
 
-    const passwordMatched = await compare(password, user.password);
+    const passwordMatched = await this.bcryptHashProvider.compareHash(
+      password,
+      user.password,
+    );
 
     if (!passwordMatched) {
       throw new AppError('Email or password incorrect', 401);

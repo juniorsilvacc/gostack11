@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { BcryptProviderImplementations } from '../../../shared/providers/bcrypt/implementations/BcryptProviderImplementations';
 import { UsersRepository } from '../repositories/implementations/UsersRepository';
 import { AuthenticatedService } from '../services/AuthenticatedService';
 
@@ -7,7 +8,11 @@ class AuthenticatedController {
     const { email, password } = request.body;
 
     const usersRepository = new UsersRepository();
-    const authenticatedService = new AuthenticatedService(usersRepository);
+    const bcryptHashProvider = new BcryptProviderImplementations();
+    const authenticatedService = new AuthenticatedService(
+      usersRepository,
+      bcryptHashProvider,
+    );
 
     const user = await authenticatedService.execute({
       email,
