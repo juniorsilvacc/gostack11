@@ -40,4 +40,28 @@ describe('UpdateAvatar', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should delete old avatar when updating new one', async () => {
+    const deleteFile = jest.spyOn(inMemoryStorageProvider, 'deleteFile');
+
+    const user = await inMemoryUsersRepository.create({
+      name: 'JuniorSilva',
+      email: 'junior@gmail.com',
+      password: '123456',
+    });
+
+    await updateAvatar.execute({
+      user_id: user.id,
+      image: 'avatar.png',
+    });
+
+    await updateAvatar.execute({
+      user_id: user.id,
+      image: 'avatar2.png',
+    });
+
+    expect(deleteFile).toHaveBeenCalledWith('avatar.png');
+
+    expect(user.avatar).toBe('avatar2.png');
+  });
 });
