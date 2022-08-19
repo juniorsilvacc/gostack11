@@ -1,14 +1,20 @@
 import { AppError } from '../../../../config/errors/AppError';
+import { InMemoryBcryptProviderImplementations } from '../../../../shared/providers/bcrypt/in-memory/InMemoryBcryptProviderImplementations';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { CreateUserService } from '../CreateUserService';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryHashProvider: InMemoryBcryptProviderImplementations;
 let createUser: CreateUserService;
 
 describe('CreateUser', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    createUser = new CreateUserService(inMemoryUsersRepository);
+    inMemoryHashProvider = new InMemoryBcryptProviderImplementations();
+    createUser = new CreateUserService(
+      inMemoryUsersRepository,
+      inMemoryHashProvider,
+    );
   });
 
   it('should create a new user', async () => {

@@ -1,9 +1,7 @@
 import { IUsersRepository } from '../repositories/IUsersRepository';
-import path from 'path';
-import fs from 'fs';
-import uploadConfig from '../../../config/upload';
 import { User } from '../models/User';
 import { AppError } from '../../../config/errors/AppError';
+import { IStorageProviderImplementations } from '../../../shared/providers/storege/IStorageProviderImplementations';
 
 interface IRequest {
   user_id: string;
@@ -11,7 +9,10 @@ interface IRequest {
 }
 
 class UpdateAvatarService {
-  constructor(private readonly usersRepository: IUsersRepository) {}
+  constructor(
+    private readonly usersRepository: IUsersRepository,
+    private readonly IStorageProvider: IStorageProviderImplementations,
+  ) {}
 
   async execute({ user_id, image }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
@@ -21,15 +22,12 @@ class UpdateAvatarService {
     }
 
     if (user.avatar) {
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarFilePath);
-      }
+      await this.IStorageProvider.deleteFile(user.avatar);
     }
 
-    user.avatar = image;
+    const filename = await this.IStorageProvider.saveFile(image);
+
+    user.avatar = filename;
 
     return await this.usersRepository.save(user);
   }

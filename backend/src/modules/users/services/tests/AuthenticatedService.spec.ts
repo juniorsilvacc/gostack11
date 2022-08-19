@@ -1,21 +1,24 @@
 import { AppError } from '../../../../config/errors/AppError';
+import { InMemoryBcryptProviderImplementations } from '../../../../shared/providers/bcrypt/in-memory/InMemoryBcryptProviderImplementations';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { AuthenticatedService } from '../AuthenticatedService';
-import { CreateUserService } from '../CreateUserService';
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let inMemoryHashProvider: InMemoryBcryptProviderImplementations;
 let authenticated: AuthenticatedService;
-let createUser: CreateUserService;
 
 describe('Authenticated', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    createUser = new CreateUserService(inMemoryUsersRepository);
-    authenticated = new AuthenticatedService(inMemoryUsersRepository);
+    inMemoryHashProvider = new InMemoryBcryptProviderImplementations();
+    authenticated = new AuthenticatedService(
+      inMemoryUsersRepository,
+      inMemoryHashProvider,
+    );
   });
 
   it('should be able to authenticate', async () => {
-    const user = await createUser.execute({
+    const user = await inMemoryUsersRepository.create({
       name: 'JúniorSilva',
       email: 'junior@hotmail.com',
       password: '123456',
