@@ -1,3 +1,4 @@
+import { AppError } from '../../../../config/errors/AppError';
 import { InMemoryStorageProviderImplementations } from '../../../../shared/providers/storege/in-memory/InMemoryStorageProviderImplementations';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { UpdateAvatarService } from '../UpdateAvatarService';
@@ -29,5 +30,14 @@ describe('UpdateAvatar', () => {
     });
 
     expect(user.avatar).toBe('avatar.png');
+  });
+
+  it('should not be able to upload avatar from non existing user', async () => {
+    await expect(
+      updateAvatar.execute({
+        user_id: 'non-existing',
+        image: 'avatar.png',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
