@@ -1,3 +1,4 @@
+import { AppError } from '../../../../config/errors/AppError';
 import { InMemoryMailProviderImplementations } from '../../../../shared/providers/mail/in-memory/InMemoryMailProviderImplementations';
 import { InMemoryUsersRepository } from '../../repositories/in-memory/InMemoryUsersRepository';
 import { SendForgotPasswordEmailService } from '../SendForgotPasswordEmailService';
@@ -30,5 +31,13 @@ describe('Send Forgot Password', () => {
     });
 
     expect(sendMail).toHaveBeenCalled();
+  });
+
+  it('should not be able to recover a non-existing user password', async () => {
+    await expect(
+      sendForgotPasswordEmail.execute({
+        email: 'junior@hotmail.com',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
